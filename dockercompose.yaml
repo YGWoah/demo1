@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  db:
+    image: public.ecr.aws/docker/library/postgres:13
+    container_name: demo1_db
+    env_file:
+      - .env
+    environment:
+      # Keep DB credentials in .env for dev. For production use docker secrets.
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432" # map host port from .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - demo-net
+
+volumes:
+  db_data:
+    # keep default driver; you can add 'driver_opts' for specific needs
+
+networks:
+  demo-net:
+    driver: bridge
