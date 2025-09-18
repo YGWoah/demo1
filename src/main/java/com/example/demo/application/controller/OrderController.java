@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.application.controller;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.application.service.OrderService;
 import com.example.demo.domain.model.Order;
-import com.example.demo.domain.service.OrderService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,9 +30,10 @@ public class OrderController {
     }
 
     @PostMapping
-    public Order createOrder(@RequestParam String product, @RequestParam int quantity) {
+    public void createOrder(@RequestParam String product, @RequestParam int quantity) {
         log.info("Create order");
-        return orderService.createOrder(product, quantity);
+        orderService.createOrder(product, quantity);
+        log.info("Order created");
     }
 
     @GetMapping
@@ -40,10 +41,9 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
-    // ...existing code...
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable UUID id) {
-        return orderService.getOrder(id)
+        return orderService.getOneOrder(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -63,5 +63,5 @@ public class OrderController {
         boolean deleted = orderService.deleteOrder(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
-    // ...existing code...
+
 }

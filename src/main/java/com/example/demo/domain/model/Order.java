@@ -12,6 +12,7 @@ import lombok.Setter;
 public class Order {
 
     private UUID id;
+    private UUID product_id;
 
     private String product;
 
@@ -19,6 +20,13 @@ public class Order {
 
     public Order(UUID id, String product, int quantity) {
         this.id = id;
+        this.product = product;
+        this.quantity = quantity;
+    }
+
+    public Order(UUID id, UUID product_id, String product, int quantity) {
+        this.id = id;
+        this.product_id = product_id;
         this.product = product;
         this.quantity = quantity;
     }

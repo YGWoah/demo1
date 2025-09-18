@@ -1,32 +1,35 @@
 package com.example.demo.infrastructure.presistence.entity;
 
 
+
+
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity
-@Table(name="orders")
+@Entity(name="products")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-public class OrderEntity {
+public class ProductEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(    
+        generator = "UUID"
+    )
     private UUID id;
-    private String product;
-    private int quantity;
+    private String name;
+    private String sku;
+    private BigDecimal price;
+    private int stock;
+    private String description;
 
-
-    public OrderEntity(String product,int quantity) {
-        this.product=product;
-        this.quantity=quantity;
-    }
-
+    
 }
